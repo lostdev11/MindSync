@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import { SidebarNavigation } from "@/components/dashboard/sidebar-navigation"
 import { SyncStatusWidget } from "@/components/dashboard/sync-status-widget"
 import { AuthGuard } from "@/components/auth/auth-guard"
@@ -10,8 +11,18 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthGuard>
-      <div className="flex h-screen w-full overflow-hidden bg-background">
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-background">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Loading your workspace...</p>
+          </div>
+        </div>
+      }
+    >
+      <AuthGuard>
+        <div className="flex h-screen w-full overflow-hidden bg-background">
         {/* Ambient background effects */}
         <div className="pointer-events-none fixed inset-0">
           <div className="absolute left-0 top-0 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.03] blur-[120px]" />
@@ -38,7 +49,8 @@ export default function DashboardLayout({
           {children}
         </main>
       </div>
-    </AuthGuard>
+      </AuthGuard>
+    </Suspense>
   )
 }
 
