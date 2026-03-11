@@ -1,9 +1,9 @@
-\"use client\"
+"use client"
 
-import { useState } from \"react\"
-import Link from \"next/link\"
-import { Button } from \"@/components/ui/button\"
-import { Menu, X, Github, ArrowRight } from \"lucide-react\"
+import { useState } from "react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Menu, X, Github, ArrowRight } from "lucide-react"
 
 const navLinks = [
   { href: "#features", label: "Features" },

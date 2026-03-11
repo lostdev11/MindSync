@@ -1,12 +1,12 @@
-\"use client\"
+"use client"
 
-import { useEffect, useState } from \"react\"
-import { Database, Cloud, RefreshCw, Wifi, WifiOff } from \"lucide-react\"
-import { cn } from \"@/lib/utils\"
+import { useEffect, useState } from "react"
+import { Database, Cloud, RefreshCw, Wifi, WifiOff } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-type SyncState = \"synced\" | \"syncing\" | \"offline\"
+type SyncState = "synced" | "syncing" | "offline"
 
-type SyncSystemId = \"local\" | \"powersync\" | \"supabase\"
+type SyncSystemId = "local" | "powersync" | "supabase"
 
 type SyncSystemStatus = {
   id: SyncSystemId
@@ -31,32 +31,32 @@ const GLOBAL_STATUS_CONFIG: Record<
   }
 > = {
   synced: {
-    label: \"All changes synced\",
-    color: \"text-emerald-400\",
-    glowFrom: \"from-emerald-500/20\",
-    glowTo: \"to-emerald-400/0\",
+    label: "All changes synced",
+    color: "text-emerald-400",
+    glowFrom: "from-emerald-500/20",
+    glowTo: "to-emerald-400/0",
     icon: Wifi,
   },
   syncing: {
-    label: \"Syncing in the background\",
-    color: \"text-amber-300\",
-    glowFrom: \"from-amber-400/25\",
-    glowTo: \"to-amber-300/0\",
+    label: "Syncing in the background",
+    color: "text-amber-300",
+    glowFrom: "from-amber-400/25",
+    glowTo: "to-amber-300/0",
     icon: RefreshCw,
   },
   offline: {
-    label: \"Offline – changes queued\",
-    color: \"text-muted-foreground\",
-    glowFrom: \"from-neutral-500/10\",
-    glowTo: \"to-neutral-500/0\",
+    label: "Offline – changes queued",
+    color: "text-muted-foreground",
+    glowFrom: "from-neutral-500/10",
+    glowTo: "to-neutral-500/0",
     icon: WifiOff,
   },
 }
 
 const SYSTEM_LABELS: Record<SyncSystemId, string> = {
-  local: \"Local SQLite\",
-  powersync: \"PowerSync\",
-  supabase: \"Supabase\",
+  local: "Local SQLite",
+  powersync: "PowerSync",
+  supabase: "Supabase",
 }
 
 const SYSTEM_BADGE_COLORS: Record<
@@ -64,26 +64,26 @@ const SYSTEM_BADGE_COLORS: Record<
   { border: string; bg: string; text: string }
 > = {
   local: {
-    border: \"border-emerald-400/40\",
-    bg: \"bg-emerald-500/10\",
-    text: \"text-emerald-300\",
+    border: "border-emerald-400/40",
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-300",
   },
   powersync: {
-    border: \"border-primary/40\",
-    bg: \"bg-primary/10\",
-    text: \"text-primary\",
+    border: "border-primary/40",
+    bg: "bg-primary/10",
+    text: "text-primary",
   },
   supabase: {
-    border: \"border-secondary/40\",
-    bg: \"bg-secondary/10\",
-    text: \"text-secondary\",
+    border: "border-secondary/40",
+    bg: "bg-secondary/10",
+    text: "text-secondary",
   },
 }
 
 const SYSTEM_STATE_LABEL: Record<SyncState, string> = {
-  synced: \"Synced\",
-  syncing: \"Syncing\",
-  offline: \"Offline\",
+  synced: "Synced",
+  syncing: "Syncing",
+  offline: "Offline",
 }
 
 function useMockSyncState() {
