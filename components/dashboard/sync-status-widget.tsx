@@ -87,14 +87,14 @@ const SYSTEM_STATE_LABEL: Record<SyncState, string> = {
 }
 
 function useMockSyncState() {
-  const [globalState, setGlobalState] = useState<SyncState>(\"synced\")
+  const [globalState, setGlobalState] = useState<SyncState>("synced")
   const [systems, setSystems] = useState<SyncSystemStatus[]>([
-    { id: \"local\", state: \"synced\" },
-    { id: \"powersync\", state: \"synced\" },
-    { id: \"supabase\", state: \"synced\" },
+    { id: "local", state: "synced" },
+    { id: "powersync", state: "synced" },
+    { id: "supabase", state: "synced" },
   ])
-  const [noteCountLabel, setNoteCountLabel] = useState(\"847 notes\")
-  const [lastSyncLabel, setLastSyncLabel] = useState(\"Last sync: moments ago\")
+  const [noteCountLabel, setNoteCountLabel] = useState("847 notes")
+  const [lastSyncLabel, setLastSyncLabel] = useState("Last sync: moments ago")
 
   useEffect(() => {
     const sequence: {
@@ -104,34 +104,34 @@ function useMockSyncState() {
       lastSync: string
     }[] = [
       {
-        global: \"synced\",
+        global: "synced",
         systems: [
-          { id: \"local\", state: \"synced\" },
-          { id: \"powersync\", state: \"synced\" },
-          { id: \"supabase\", state: \"synced\" },
+          { id: "local", state: "synced" },
+          { id: "powersync", state: "synced" },
+          { id: "supabase", state: "synced" },
         ],
-        noteCount: \"847 notes\",
-        lastSync: \"Last sync: moments ago\",
+        noteCount: "847 notes",
+        lastSync: "Last sync: moments ago",
       },
       {
-        global: \"syncing\",
+        global: "syncing",
         systems: [
-          { id: \"local\", state: \"syncing\" },
-          { id: \"powersync\", state: \"syncing\" },
-          { id: \"supabase\", state: \"synced\" },
+          { id: "local", state: "syncing" },
+          { id: "powersync", state: "syncing" },
+          { id: "supabase", state: "synced" },
         ],
-        noteCount: \"Syncing recent changes…\",
-        lastSync: \"Last sync: < 1 min ago\",
+        noteCount: "Syncing recent changes…",
+        lastSync: "Last sync: < 1 min ago",
       },
       {
-        global: \"offline\",
+        global: "offline",
         systems: [
-          { id: \"local\", state: \"synced\" },
-          { id: \"powersync\", state: \"offline\" },
-          { id: \"supabase\", state: \"offline\" },
+          { id: "local", state: "synced" },
+          { id: "powersync", state: "offline" },
+          { id: "supabase", state: "offline" },
         ],
-        noteCount: \"Working locally – queued\",
-        lastSync: \"Last cloud sync: 4 min ago\",
+        noteCount: "Working locally – queued",
+        lastSync: "Last cloud sync: 4 min ago",
       },
     ]
 
