@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, FormEvent } from "react"
+import { Suspense, useEffect, useState, FormEvent } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Mail, ArrowRight } from "lucide-react"
 import { supabase } from "@/lib/supabase/client"
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function SignInPage() {
+function SignInPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectParam = searchParams?.get("redirect") ?? "/dashboard"
@@ -138,3 +138,19 @@ export default function SignInPage() {
   )
 }
 
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Preparing sign-in...</p>
+          </div>
+        </div>
+      }
+    >
+      <SignInPageContent />
+    </Suspense>
+  )
+}
