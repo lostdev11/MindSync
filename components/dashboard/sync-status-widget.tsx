@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Database, Cloud, RefreshCw, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { usePowerSync, useStatus } from "@powersync/react"
+import { usePowerSync, useQuery, useStatus } from "@powersync/react"
 
 type SyncState = "synced" | "syncing" | "offline"
 
@@ -166,13 +166,28 @@ function usePowerSyncStatus(): SyncSystemStatus | null {
   return { id: "powersync", state }
 }
 
+/** Real note count from local PowerSync DB; null when unavailable or loading. */
+function useNoteCount(): number | null {
+  const { data, isLoading } = useQuery<{ count: number }>(
+    "SELECT COUNT(*) as count FROM notes"
+  )
+  if (isLoading || data == null || data.length === 0) return null
+  const count = data[0]?.count
+  return typeof count === "number" ? count : null
+}
+
 export function SyncStatus() {
   return <SyncStatusWidget />
+}
+
+function formatNoteCount(count: number): string {
+  return count === 1 ? "1 note" : `${count} notes`
 }
 
 export function SyncStatusWidget(props: SyncStatusWidgetProps) {
   const mock = useMockSyncState()
   const powersyncStatus = usePowerSyncStatus()
+  const noteCount = useNoteCount()
 
   const baseSystems = props.systems ?? mock.systems
   const systems: SyncSystemStatus[] = powersyncStatus
@@ -180,7 +195,9 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
     : baseSystems
 
   const globalState: SyncState = props.globalState ?? mock.globalState
-  const noteCountLabel = props.noteCountLabel ?? mock.noteCountLabel
+  const noteCountLabel =
+    props.noteCountLabel ??
+    (noteCount != null ? formatNoteCount(noteCount) : mock.noteCountLabel)
   const lastSyncLabel = props.lastSyncLabel ?? mock.lastSyncLabel
 
   const [isExpanded, setIsExpanded] = useState(false)
@@ -189,16 +206,16 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
   const GlobalIcon = globalConfig.icon
 
   return (
-    <div className="space-y-3">
+    <div className="w-full min-w-0 space-y-3">
       <button
         type="button"
         onClick={() => setIsExpanded((prev) => !prev)}
         className={cn(
-          "group relative flex w-full items-center gap-2 overflow-hidden rounded-xl border border-border/60 bg-card/70 px-2.5 py-2 text-xs shadow-[0_0_0_1px_rgba(15,23,42,0.6)] transition-colors",
+          "group relative flex w-full min-w-0 items-center gap-2 overflow-visible rounded-xl border border-border/60 bg-card/70 px-2.5 py-2 text-xs shadow-[0_0_0_1px_rgba(15,23,42,0.6)] transition-colors",
           "hover:border-primary/40 hover:bg-card/90"
         )}
       >
-        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div
             className={cn(
               "absolute inset-x-[-40%] top-0 h-16 bg-gradient-to-br",
@@ -208,8 +225,8 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
           />
         </div>
 
-        <div className="relative flex items-center gap-2">
-          <div className="relative">
+        <div className="relative flex min-w-0 flex-1 items-center gap-2">
+          <div className="relative shrink-0">
             <div
               className={cn(
                 "h-2.5 w-2.5 rounded-full shadow-[0_0_0_1px_rgba(15,23,42,0.9)]",
@@ -229,21 +246,21 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
             />
           </div>
 
-          <div className="flex flex-col">
-            <span className={cn("flex items-center gap-1.5 font-medium", globalConfig.color)}>
-              <span className="inline-flex items-center rounded-full bg-background/60 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
+          <div className="min-w-0 flex-1 flex flex-col">
+            <span className={cn("flex min-w-0 items-center gap-1.5 font-medium", globalConfig.color)}>
+              <span className="inline-flex shrink-0 items-center rounded-full bg-background/60 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
                 Sync
               </span>
-              <span className="truncate">{globalConfig.label}</span>
+              <span className="min-w-0 truncate">{globalConfig.label}</span>
             </span>
-            <span className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
+            <span className="mt-0.5 line-clamp-1 min-w-0 truncate text-[11px] text-muted-foreground">
               {noteCountLabel}
             </span>
           </div>
         </div>
 
-        <div className="relative ml-auto flex items-center gap-1 text-[11px] text-muted-foreground">
-          <span className="hidden sm:inline-flex">{lastSyncLabel}</span>
+        <div className="relative flex min-w-0 items-center justify-end gap-1 text-[11px] text-muted-foreground">
+          <span className="hidden min-w-0 truncate sm:inline" title={lastSyncLabel}>{lastSyncLabel}</span>
           <GlobalIcon
             className={cn(
               "h-3.5 w-3.5",
@@ -255,17 +272,17 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
       </button>
 
       {isExpanded && (
-        <div className="space-y-3 rounded-xl border border-border/70 bg-card/80 p-3 shadow-[0_18px_40px_rgba(15,23,42,0.55)]">
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-[11px] font-medium text-muted-foreground">
+        <div className="w-full min-w-0 space-y-3 overflow-visible rounded-xl border border-border/70 bg-card/80 p-3 shadow-[0_18px_40px_rgba(15,23,42,0.55)]">
+          <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <span className="shrink-0 text-[11px] font-medium text-muted-foreground">
               Sync path
             </span>
-            <span className="rounded-full bg-background/70 px-2 py-0.5 text-[10px] text-muted-foreground">
+            <span className="min-w-0 rounded-full bg-background/70 px-2 py-0.5 text-[10px] text-muted-foreground">
               Local → PowerSync → Supabase
             </span>
           </div>
 
-          <div className="mt-2 flex items-center justify-between gap-4">
+          <div className="mt-2 flex min-w-0 flex-shrink items-center justify-between gap-1 sm:gap-2">
             <SyncSystemPill
               id="local"
               status={systems.find((s) => s.id === "local")?.state ?? "offline"}
@@ -298,12 +315,12 @@ export function SyncStatusWidget(props: SyncStatusWidgetProps) {
             />
           </div>
 
-          <div className="mt-3 flex items-center justify-between gap-3 border-t border-border/40 pt-2.5 text-[10px] text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+          <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2 border-t border-border/40 pt-2.5 text-[10px] text-muted-foreground">
+            <span className="flex min-w-0 items-center gap-1.5">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400/70" />
               End-to-end encrypted local-first sync
             </span>
-            <span className="hidden text-[10px] text-muted-foreground/80 sm:inline">
+            <span className="min-w-0 text-[10px] text-muted-foreground/80 sm:inline">
               Status updates automatically – no manual refresh needed
             </span>
           </div>
@@ -325,7 +342,7 @@ function SyncSystemPill({ id, status }: SyncSystemPillProps) {
     id === "local" ? Database : id === "powersync" ? RefreshCw : Cloud
 
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <div className="flex min-w-0 shrink flex-col items-center gap-1.5">
       <div
         className={cn(
           "relative flex h-9 w-9 items-center justify-center rounded-xl border bg-gradient-to-br from-background/80 to-background/40 shadow-[0_12px_30px_rgba(15,23,42,0.7)]",
@@ -344,7 +361,7 @@ function SyncSystemPill({ id, status }: SyncSystemPillProps) {
           <div className="pointer-events-none absolute inset-0 rounded-xl border border-emerald-400/40 opacity-60 blur-[2px]" />
         )}
       </div>
-      <span className="text-[10px] font-medium text-muted-foreground">
+      <span className="truncate text-[10px] font-medium text-muted-foreground">
         {SYSTEM_LABELS[id]}
       </span>
       <span
@@ -371,7 +388,7 @@ function SyncArrow({ isActive, variant }: SyncArrowProps) {
     variant === "primary" ? "text-primary/60" : "text-secondary/60"
 
   return (
-    <div className="flex flex-col items-center gap-0.5">
+    <div className="flex shrink-0 flex-col items-center gap-0.5">
       <svg
         width="26"
         height="10"

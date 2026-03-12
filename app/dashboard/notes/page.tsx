@@ -5,10 +5,12 @@ import { useSearchParams } from "next/navigation"
 import { NoteEditor } from "@/components/dashboard/note-editor"
 import { NoteCard } from "@/components/dashboard/note-card"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { useIsMobile } from "@/components/ui/use-mobile"
 import { cn } from "@/lib/utils"
 import { supabase } from "@/lib/supabase/client"
 import type { Note, Collection } from "@/types/mindsync"
-import { FileText, FolderOpen, Plus, Search, Trash2 } from "lucide-react"
+import { ArrowLeft, FileText, FolderOpen, Menu, Plus, Search, Trash2 } from "lucide-react"
 
 export default function NotesPage() {
   const searchParams = useSearchParams()
@@ -24,6 +26,9 @@ export default function NotesPage() {
   const [isLoadingCollections, setIsLoadingCollections] = useState(false)
   const [collectionsError, setCollectionsError] = useState<string | null>(null)
   const hasAppliedUrlCollection = useRef(false)
+  const isMobile = useIsMobile()
+  const [mobileView, setMobileView] = useState<"list" | "editor">("list")
+  const [collectionsSheetOpen, setCollectionsSheetOpen] = useState(false)
 
   // Preselect collection from URL once when collections have loaded
   useEffect(() => {
@@ -141,6 +146,16 @@ export default function NotesPage() {
 
   const handleCreateNew = () => {
     setSelectedNoteId(null)
+    if (isMobile) setMobileView("editor")
+  }
+
+  const handleSelectNote = (id: string) => {
+    setSelectedNoteId(id)
+    if (isMobile) setMobileView("editor")
+  }
+
+  const handleBackToList = () => {
+    if (isMobile) setMobileView("list")
   }
 
   const handleSave = async (data: { title: string; content: string; tags: string[] }) => {
@@ -284,9 +299,201 @@ export default function NotesPage() {
     }
   }
 
+  const collectionsNav = (
+    <nav className="space-y-1">
+      <button
+        onClick={() => {
+          setSelectedCollection(null)
+          if (isMobile) setCollectionsSheetOpen(false)
+        }}
+        className={cn(
+          "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+          !selectedCollection
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+        )}
+      >
+        <FolderOpen className="h-4 w-4 shrink-0" />
+        <span>All notes</span>
+        <span className="ml-auto text-xs opacity-60">{notes.length}</span>
+      </button>
+      {collectionsError && (
+        <p className="px-3 text-xs text-red-500">{collectionsError}</p>
+      )}
+      {isLoadingCollections && (
+        <p className="px-3 text-xs text-muted-foreground">Loading collections...</p>
+      )}
+      {collections.map((collection) => (
+        <button
+          key={collection.id}
+          onClick={() => {
+            setSelectedCollection(collection.id)
+            if (isMobile) setCollectionsSheetOpen(false)
+          }}
+          className={cn(
+            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+            selectedCollection === collection.id
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+          )}
+        >
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: collection.color ?? "#64748b" }}
+          />
+          <span className="truncate">{collection.name}</span>
+          <span className="ml-auto text-xs opacity-60">
+            {notes.filter((n) => n.collection_id === collection.id).length}
+          </span>
+        </button>
+      ))}
+      {collections.length === 0 && !isLoadingCollections && (
+        <p className="px-3 text-xs text-muted-foreground">
+          No collections yet. Create some from the Collections page to organize your notes.
+        </p>
+      )}
+    </nav>
+  )
+
+  const notesListPanel = (
+    <div className="flex flex-1 flex-col border-r border-border/50 bg-card/20 md:w-80 md:shrink-0">
+      <div className="border-b border-border/50 p-4">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search notes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-10 w-full rounded-lg border border-border/50 bg-muted/30 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+      </div>
+      <div className="flex-1 space-y-2 overflow-auto p-4">
+        {error && <p className="mb-2 text-xs text-red-500">{error}</p>}
+        {isLoading ? (
+          <div className="flex min-h-[200px] items-center justify-center">
+            <p className="text-sm text-muted-foreground">Loading notes...</p>
+          </div>
+        ) : notes.length === 0 && !searchQuery ? (
+          <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 text-center text-muted-foreground">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-border/60 bg-card/60">
+              <FileText className="h-5 w-5" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-foreground">No notes yet</p>
+              <p className="text-xs text-muted-foreground">
+                Create your first note to start organizing your thoughts.
+              </p>
+            </div>
+            <Button size="sm" variant="outline" className="mt-1 gap-2" onClick={handleCreateNew}>
+              <Plus className="h-4 w-4" />
+              New Note
+            </Button>
+          </div>
+        ) : filteredNotes.length === 0 ? (
+          <div className="flex min-h-[200px] items-center justify-center">
+            <p className="text-sm text-muted-foreground">No notes match your search.</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredNotes.map((note) => (
+              <div key={note.id} className="group relative">
+                <NoteCard
+                  title={note.title || "Untitled note"}
+                  preview={note.content || "No content yet"}
+                  date={new Date(note.created_at).toLocaleDateString()}
+                  tags={note.tags}
+                  onClick={() => handleSelectNote(note.id)}
+                  variant="compact"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleDelete(note.id)
+                  }}
+                  className={cn(
+                    "absolute right-2 top-2 rounded-full bg-background/90 p-1 text-xs text-muted-foreground shadow-sm hover:text-red-500",
+                    isMobile ? "flex" : "hidden group-hover:flex"
+                  )}
+                  aria-label="Delete note"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="border-t border-border/50 p-4">
+        <Button className="w-full gap-2" variant="outline" onClick={handleCreateNew}>
+          <Plus className="h-4 w-4" />
+          New Note
+        </Button>
+      </div>
+    </div>
+  )
+
+  const editorPanel = (
+    <div className="flex min-h-0 flex-1 flex-col p-4 md:p-6">
+      <NoteEditor
+        key={selectedNoteId ?? "new"}
+        initialTitle={selectedNote?.title ?? ""}
+        initialContent={selectedNote?.content ?? ""}
+        initialTags={selectedNote?.tags ?? []}
+        onSave={handleSave}
+      />
+      {isSaving && <p className="mt-2 text-xs text-muted-foreground">Saving...</p>}
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <div className="flex h-full flex-col">
+        {mobileView === "list" ? (
+          <>
+            <div className="flex shrink-0 items-center gap-2 border-b border-border/50 bg-card/30 px-4 py-3">
+              <Sheet open={collectionsSheetOpen} onOpenChange={setCollectionsSheetOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" aria-label="Collections">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-64 p-0">
+                  <SheetHeader className="border-b border-border/50 px-4 py-3">
+                    <SheetTitle className="text-base">Collections</SheetTitle>
+                  </SheetHeader>
+                  <div className="p-4">{collectionsNav}</div>
+                </SheetContent>
+              </Sheet>
+              <span className="font-medium text-foreground">Notes</span>
+            </div>
+            <div className="flex-1 overflow-auto">{notesListPanel}</div>
+          </>
+        ) : (
+          <>
+            <div className="flex shrink-0 items-center gap-2 border-b border-border/50 bg-card/30 px-4 py-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Back to notes"
+                onClick={handleBackToList}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <span className="truncate font-medium text-foreground">
+                {selectedNote ? (selectedNote.title || "Untitled note") : "New note"}
+              </span>
+            </div>
+            <div className="flex-1 overflow-auto">{editorPanel}</div>
+          </>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-full">
-      {/* Collections Sidebar */}
       <aside className="w-56 shrink-0 border-r border-border/50 bg-card/30 p-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-foreground">Collections</h2>
@@ -299,170 +506,10 @@ export default function NotesPage() {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-
-        <nav className="space-y-1">
-          <button
-            onClick={() => setSelectedCollection(null)}
-            className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-              !selectedCollection
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-            )}
-          >
-            <FolderOpen className="h-4 w-4" />
-            <span>All notes</span>
-            <span className="ml-auto text-xs opacity-60">{notes.length}</span>
-          </button>
-
-          {collectionsError && (
-            <p className="px-3 text-xs text-red-500">
-              {collectionsError}
-            </p>
-          )}
-
-          {isLoadingCollections && (
-            <p className="px-3 text-xs text-muted-foreground">Loading collections...</p>
-          )}
-
-          {collections.map((collection) => (
-            <button
-              key={collection.id}
-              onClick={() => setSelectedCollection(collection.id)}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                selectedCollection === collection.id
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-              )}
-            >
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{ backgroundColor: collection.color ?? "#64748b" }}
-              />
-              <span className="truncate">{collection.name}</span>
-              <span className="ml-auto text-xs opacity-60">
-                {notes.filter((n) => n.collection_id === collection.id).length}
-              </span>
-            </button>
-          ))}
-
-          {collections.length === 0 && !isLoadingCollections && (
-            <p className="px-3 text-xs text-muted-foreground">
-              No collections yet. Create some from the Collections page to organize your notes.
-            </p>
-          )}
-        </nav>
+        {collectionsNav}
       </aside>
-
-      {/* Notes List */}
-      <div className="flex w-80 shrink-0 flex-col border-r border-border/50 bg-card/20">
-        {/* Search */}
-        <div className="border-b border-border/50 p-4">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search notes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-10 w-full rounded-lg border border-border/50 bg-muted/30 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
-          </div>
-        </div>
-
-        {/* Notes */}
-        <div className="flex-1 space-y-2 overflow-auto p-4">
-          {error && (
-            <p className="mb-2 text-xs text-red-500">
-              {error}
-            </p>
-          )}
-
-          {isLoading ? (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-sm text-muted-foreground">Loading notes...</p>
-            </div>
-          ) : notes.length === 0 && !searchQuery ? (
-            <div className="flex h-full flex-col items-center justify-center gap-3 text-center text-muted-foreground">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-dashed border-border/60 bg-card/60">
-                <FileText className="h-5 w-5" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-foreground">No notes yet</p>
-                <p className="text-xs text-muted-foreground">
-                  Create your first note to start organizing your thoughts.
-                </p>
-              </div>
-              <Button
-                size="sm"
-                variant="outline"
-                className="mt-1 gap-2"
-                onClick={handleCreateNew}
-              >
-                <Plus className="h-4 w-4" />
-                New Note
-              </Button>
-            </div>
-          ) : filteredNotes.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-sm text-muted-foreground">No notes match your search.</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {filteredNotes.map((note) => (
-                <div key={note.id} className="group relative">
-                  <NoteCard
-                    title={note.title || "Untitled note"}
-                    preview={note.content || "No content yet"}
-                    date={new Date(note.created_at).toLocaleDateString()}
-                    tags={note.tags}
-                    onClick={() => setSelectedNoteId(note.id)}
-                    variant="compact"
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDelete(note.id)
-                    }}
-                    className="absolute right-2 top-2 hidden rounded-full bg-background/90 p-1 text-xs text-muted-foreground shadow-sm hover:text-red-500 group-hover:flex"
-                    aria-label="Delete note"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* New Note Button */}
-        <div className="border-t border-border/50 p-4">
-          <Button
-            className="w-full gap-2"
-            variant="outline"
-            onClick={handleCreateNew}
-          >
-            <Plus className="h-4 w-4" />
-            New Note
-          </Button>
-        </div>
-      </div>
-
-      {/* Editor */}
-      <div className="flex-1 p-6">
-        <NoteEditor
-          initialTitle={selectedNote?.title ?? ""}
-          initialContent={selectedNote?.content ?? ""}
-          initialTags={selectedNote?.tags ?? []}
-          onSave={handleSave}
-        />
-        {isSaving && (
-          <p className="mt-2 text-xs text-muted-foreground">
-            Saving...
-          </p>
-        )}
-      </div>
+      {notesListPanel}
+      <div className="min-w-0 flex-1">{editorPanel}</div>
     </div>
   )
 }

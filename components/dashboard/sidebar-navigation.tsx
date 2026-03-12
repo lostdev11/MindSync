@@ -22,7 +22,11 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ]
 
-export function SidebarNavigation() {
+interface SidebarNavigationProps {
+  onNavigate?: () => void
+}
+
+export function SidebarNavigation({ onNavigate }: SidebarNavigationProps) {
   const pathname = usePathname()
 
   return (
@@ -49,6 +53,7 @@ export function SidebarNavigation() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 isActive

@@ -2,6 +2,21 @@ import type { AbstractPowerSyncDatabase } from "@powersync/web"
 import { UpdateType } from "@powersync/web"
 import { supabase } from "@/lib/supabase/client"
 
+/** Returns true if the JWT is expired or invalid (treat as no credentials). */
+function isJwtExpired(token: string, bufferSeconds = 60): boolean {
+  try {
+    const parts = token.split(".")
+    if (parts.length !== 3) return true
+    const payload = JSON.parse(
+      atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))
+    ) as { exp?: number }
+    if (typeof payload.exp !== "number") return false
+    return payload.exp < Date.now() / 1000 + bufferSeconds
+  } catch {
+    return true
+  }
+}
+
 /**
  * Connects PowerSync to Supabase:
  * - fetchCredentials: uses Supabase session JWT for PowerSync Cloud (or dev token).
@@ -22,6 +37,11 @@ export class BackendConnector {
     const token = data.session?.access_token ?? this.devToken
 
     if (!this.powersyncUrl || !token) {
+      return null
+    }
+
+    // Don't use an expired token — returning null prevents WebSocket connection and avoids connection errors.
+    if (isJwtExpired(token)) {
       return null
     }
 
