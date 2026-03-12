@@ -72,16 +72,16 @@ export function KnowledgeGraph() {
         <defs>
           {/* Gradient for left connections */}
           <linearGradient id="conn-left" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.7" />
-            <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+            <stop offset="0%" stopColor="#fafafa" stopOpacity="0.5" />
+            <stop offset="50%" stopColor="#d4af37" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#fafafa" stopOpacity="0.5" />
           </linearGradient>
           
           {/* Gradient for right connections */}
           <linearGradient id="conn-right" x1="100%" y1="0%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.7" />
-            <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+            <stop offset="0%" stopColor="#fafafa" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#fafafa" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
           </linearGradient>
           
           {/* Glow filter */}
@@ -157,7 +157,7 @@ export function KnowledgeGraph() {
 
             {/* Animated particles along paths */}
             {[0, 1, 2].map((i) => (
-              <circle key={`left-${i}`} r="3" fill="#7c3aed" opacity="0.9">
+              <circle key={`left-${i}`} r="3" fill="#d4af37" opacity="0.9">
                 <animateMotion
                   dur={`${2.5 + i * 0.3}s`}
                   repeatCount="indefinite"
@@ -170,7 +170,7 @@ export function KnowledgeGraph() {
               </circle>
             ))}
             {[0, 1, 2].map((i) => (
-              <circle key={`right-${i}`} r="3" fill="#06b6d4" opacity="0.9">
+              <circle key={`right-${i}`} r="3" fill="#fafafa" opacity="0.9">
                 <animateMotion
                   dur={`${2.5 + i * 0.3}s`}
                   repeatCount="indefinite"
@@ -195,7 +195,10 @@ export function KnowledgeGraph() {
               key={node.id}
               className="group relative"
               style={{
-                animation: mounted ? `float 5s ease-in-out infinite` : 'none',
+                animationName: mounted ? 'float' : 'none',
+                animationDuration: '5s',
+                animationTimingFunction: 'ease-in-out',
+                animationIterationCount: 'infinite',
                 animationDelay: `${idx * 0.2}s`,
               }}
             >
@@ -227,7 +230,10 @@ export function KnowledgeGraph() {
               key={node.id}
               className="group relative"
               style={{
-                animation: mounted ? `float 5s ease-in-out infinite` : 'none',
+                animationName: mounted ? 'float' : 'none',
+                animationDuration: '5s',
+                animationTimingFunction: 'ease-in-out',
+                animationIterationCount: 'infinite',
                 animationDelay: `${idx * 0.2 + 0.5}s`,
               }}
             >
@@ -250,15 +256,18 @@ export function KnowledgeGraph() {
       </div>
 
       {/* Ambient Context Nodes (tiny floating labels) */}
-      {contextNodes.map((node) => (
+      {contextNodes.map((node, nodeIndex) => (
         <div
           key={node.id}
           className="absolute hidden text-[10px] text-muted-foreground/50 lg:block"
           style={{
             left: `${node.x}%`,
             top: `${node.y}%`,
-            animation: mounted ? `float 7s ease-in-out infinite` : 'none',
-            animationDelay: `${Math.random() * 2}s`,
+            animationName: mounted ? 'float' : 'none',
+            animationDuration: '7s',
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            animationDelay: `${nodeIndex * 0.34}s`,
             zIndex: 5,
           }}
         >
@@ -272,8 +281,8 @@ export function KnowledgeGraph() {
       {/* Central Product Mockup */}
       <div className="relative mx-auto max-w-2xl px-4 lg:max-w-3xl lg:px-24" style={{ zIndex: 20 }}>
         {/* Outer glow rings */}
-        <div className="absolute -inset-8 rounded-[40px] bg-gradient-to-b from-primary/15 via-primary/5 to-transparent blur-3xl" />
-        <div className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-secondary/10 to-transparent blur-2xl" />
+        <div className="absolute -inset-8 rounded-[40px] bg-gradient-to-b from-white/10 via-white/5 to-transparent blur-3xl" />
+        <div className="absolute -inset-4 rounded-3xl bg-gradient-to-b from-white/8 to-primary/5 blur-2xl" />
         
         {/* Main product card */}
         <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-card/95 shadow-2xl shadow-black/40 backdrop-blur-xl">
@@ -305,10 +314,10 @@ export function KnowledgeGraph() {
           <div className="p-4 sm:p-6">
             {/* Search input */}
             <div className="relative mb-5">
-              <div className="flex items-center gap-3 rounded-xl border border-primary/30 bg-background/50 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_0_30px_rgba(124,58,237,0.06)]">
+              <div className="flex items-center gap-3 rounded-xl border border-primary/30 bg-background/50 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_0_30px_rgba(212,175,55,0.06)]">
                 <Search className="h-5 w-5 text-primary/70" />
                 <span className="flex-1 text-sm text-foreground sm:text-base">What ideas did I write about Solana last week?</span>
-                <button className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_20px_rgba(124,58,237,0.25)] transition-all hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]">
+                <button className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.25)] transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
                   <Sparkles className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Recall</span>
                 </button>
@@ -377,7 +386,7 @@ export function KnowledgeGraph() {
                     </div>
                     
                     {/* Hover accent */}
-                    <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-primary to-secondary transition-all duration-500 group-hover:w-full" />
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-transparent via-white/40 to-primary/60 transition-all duration-500 group-hover:w-full" />
                   </div>
                 ))}
               </div>
@@ -417,7 +426,10 @@ export function KnowledgeGraph() {
                   : 'border-secondary/30 bg-secondary/10'
               }`}
               style={{
-                animation: mounted ? `float 5s ease-in-out infinite` : 'none',
+                animationName: mounted ? 'float' : 'none',
+                animationDuration: '5s',
+                animationTimingFunction: 'ease-in-out',
+                animationIterationCount: 'infinite',
                 animationDelay: `${i * 0.15}s`,
               }}
             >

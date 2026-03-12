@@ -161,7 +161,7 @@ export default function DashboardPage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-6">
           {/* Auth / global empty state */}
           {isAuthenticated === false && (
-            <div className="flex items-center justify-between gap-6 rounded-2xl border border-border/60 bg-card/60 p-6">
+            <div className="gold-gradient-card flex items-center justify-between gap-6 border border-border/60 p-6">
               <div className="flex items-center gap-4">
                 <div className="relative flex h-12 w-12 items-center justify-center">
                   <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-xl" />
@@ -184,8 +184,8 @@ export default function DashboardPage() {
 
           {/* Stats + summary */}
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-4">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-40" />
+            <div className="gold-gradient-card relative overflow-hidden border border-border/60 p-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-primary/5 to-transparent opacity-40" />
               <div className="relative flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -204,8 +204,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-4">
-              <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-secondary/5 to-transparent opacity-30" />
+            <div className="gold-gradient-card relative overflow-hidden border border-border/60 p-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-white/5 to-transparent opacity-30" />
               <div className="relative flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -226,8 +226,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-4">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-secondary/10 to-transparent opacity-40" />
+            <div className="gold-gradient-card relative overflow-hidden border border-border/60 p-4">
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-primary/5 to-transparent opacity-40" />
               <div className="relative flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -267,8 +267,8 @@ export default function DashboardPage() {
 
           {/* Lightweight first-run onboarding */}
           {isFirstRun && (
-            <section className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/80 p-5">
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/5 to-transparent opacity-60" />
+            <section className="gold-gradient-card relative overflow-hidden border border-border/60 p-5">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/10 via-primary/5 to-transparent opacity-60" />
               <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-1.5">
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -327,7 +327,7 @@ export default function DashboardPage() {
           {/* Main content: recent notes + onboarding */}
           <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
             {/* Recent notes */}
-            <section className="space-y-3 rounded-2xl border border-border/60 bg-card/70 p-5">
+            <section className="gold-gradient-card space-y-3 border border-border/60 p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h2 className="text-sm font-semibold tracking-tight text-foreground">
@@ -408,9 +408,9 @@ export default function DashboardPage() {
               )}
             </section>
 
-            {/* Right column: activity + onboarding actions */}
-            <section className="space-y-4">
-              <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/80 p-5">
+              {/* Right column: activity + onboarding actions */}
+              <section className="space-y-4">
+                <div className="gold-gradient-card relative overflow-hidden border border-border/60 p-5">
                 <div
                   className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl"
                   aria-hidden="true"
@@ -433,9 +433,9 @@ export default function DashboardPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+                </div>
 
-              <div className="space-y-3 rounded-2xl border border-dashed border-border/60 bg-card/60 p-5">
+                <div className="gold-gradient-card space-y-3 border border-dashed border-border/60 p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

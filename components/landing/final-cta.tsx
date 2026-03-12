@@ -16,7 +16,7 @@ export function FinalCTA() {
         <div 
           className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `linear-gradient(rgba(124,58,237,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.02) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(212,175,55,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.02) 1px, transparent 1px)`,
             backgroundSize: '64px 64px'
           }}
         />
@@ -29,15 +29,18 @@ export function FinalCTA() {
         >
           <defs>
             <linearGradient id="cta-line-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#7c3aed" stopOpacity="0" />
-              <stop offset="30%" stopColor="#7c3aed" stopOpacity="0.3" />
-              <stop offset="70%" stopColor="#06b6d4" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+              <stop offset="0%" stopColor="#fafafa" stopOpacity="0" />
+              <stop offset="40%" stopColor="#fafafa" stopOpacity="0.25" />
+              <stop offset="50%" stopColor="#d4af37" stopOpacity="0.3" />
+              <stop offset="60%" stopColor="#fafafa" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="cta-line-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0" />
-              <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+              <stop offset="0%" stopColor="#fafafa" stopOpacity="0" />
+              <stop offset="45%" stopColor="#fafafa" stopOpacity="0.2" />
+              <stop offset="50%" stopColor="#d4af37" stopOpacity="0.25" />
+              <stop offset="55%" stopColor="#fafafa" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
             </linearGradient>
           </defs>
           <path
@@ -90,7 +93,7 @@ export function FinalCTA() {
               <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 Build a memory system that{" "}
                 <span className="relative">
-                  <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
                     actually remembers
                   </span>
                 </span>
@@ -106,7 +109,7 @@ export function FinalCTA() {
                 <Link href="/dashboard">
                   <Button 
                     size="lg" 
-                    className="group relative h-14 w-full overflow-hidden rounded-xl bg-primary px-10 text-base font-semibold text-primary-foreground shadow-[0_0_40px_rgba(124,58,237,0.35)] transition-all hover:shadow-[0_0_60px_rgba(124,58,237,0.5)] sm:w-auto"
+                    className="group relative h-14 w-full overflow-hidden rounded-xl bg-primary px-10 text-base font-semibold text-primary-foreground shadow-[0_0_40px_rgba(212,175,55,0.35)] transition-all hover:shadow-[0_0_60px_rgba(212,175,55,0.5)] sm:w-auto"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       Get Started Free

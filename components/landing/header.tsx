@@ -24,9 +24,9 @@ export function Header() {
             {/* Outer ring */}
             <div className="absolute inset-0 rounded-xl border border-primary/30 bg-primary/10" />
             {/* Inner glow */}
-            <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/10" />
+            <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-white/15 to-primary/10" />
             {/* Core */}
-            <div className="relative h-3.5 w-3.5 rounded-full bg-primary shadow-[0_0_12px_rgba(124,58,237,0.6)]" />
+            <div className="relative h-3.5 w-3.5 rounded-full bg-primary shadow-[0_0_12px_rgba(212,175,55,0.6)]" />
             {/* Orbiting dot */}
             <div className="absolute -right-0.5 top-1 h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
           </div>
@@ -58,7 +58,7 @@ export function Header() {
         {/* Desktop CTA */}
         <div className="hidden md:block">
           <Link href="/sign-in">
-            <Button className="group h-10 rounded-lg bg-primary px-5 font-semibold text-primary-foreground shadow-[0_0_20px_rgba(124,58,237,0.25)] transition-all hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]">
+            <Button className="group h-10 rounded-lg bg-primary px-5 font-semibold text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.25)] transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
               <span>Get Started</span>
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
@@ -103,7 +103,7 @@ export function Header() {
             </div>
             <div className="mt-4 border-t border-border/30 pt-4">
               <Link href="/sign-in">
-                <Button className="w-full h-12 rounded-lg bg-primary font-semibold text-primary-foreground shadow-[0_0_20px_rgba(124,58,237,0.25)]">
+                <Button className="w-full h-12 rounded-lg bg-primary font-semibold text-primary-foreground shadow-[0_0_20px_rgba(212,175,55,0.25)]">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

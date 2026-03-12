@@ -4,6 +4,7 @@ import { Suspense } from "react"
 import { SidebarNavigation } from "@/components/dashboard/sidebar-navigation"
 import { SyncStatusWidget } from "@/components/dashboard/sync-status-widget"
 import { AuthGuard } from "@/components/auth/auth-guard"
+import { PowerSyncProvider } from "@/components/providers/powersync-provider"
 
 export default function DashboardLayout({
   children,
@@ -13,7 +14,7 @@ export default function DashboardLayout({
   return (
     <Suspense
       fallback={
-        <div className="flex h-screen items-center justify-center bg-background">
+        <div className="flex h-screen items-center justify-center bg-white">
           <div className="flex flex-col items-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             <p className="text-sm text-muted-foreground">Loading your workspace...</p>
@@ -22,7 +23,8 @@ export default function DashboardLayout({
       }
     >
       <AuthGuard>
-        <div className="flex h-screen w-full overflow-hidden bg-background">
+        <PowerSyncProvider>
+        <div className="flex h-screen w-full overflow-hidden bg-white">
         {/* Ambient background effects */}
         <div className="pointer-events-none fixed inset-0">
           <div className="absolute left-0 top-0 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.03] blur-[120px]" />
@@ -30,7 +32,7 @@ export default function DashboardLayout({
           <div 
             className="absolute inset-0 opacity-30"
             style={{
-              backgroundImage: `linear-gradient(rgba(124,58,237,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.015) 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(rgba(212,175,55,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.015) 1px, transparent 1px)`,
               backgroundSize: '48px 48px'
             }}
           />
@@ -49,6 +51,7 @@ export default function DashboardLayout({
           {children}
         </main>
       </div>
+        </PowerSyncProvider>
       </AuthGuard>
     </Suspense>
   )

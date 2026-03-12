@@ -26,8 +26,9 @@ export function RecallResultCard({
       <svg className="absolute right-0 top-0 h-48 w-48 opacity-20" viewBox="0 0 100 100">
         <defs>
           <linearGradient id="recall-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#7c3aed" />
-            <stop offset="100%" stopColor="#06b6d4" />
+            <stop offset="0%" stopColor="#fafafa" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#d4af37" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#fafafa" stopOpacity="0.6" />
           </linearGradient>
         </defs>
         <circle cx="80" cy="20" r="3" fill="url(#recall-grad)" opacity="0.5" />
@@ -41,7 +42,7 @@ export function RecallResultCard({
         {/* Title */}
         <div className="mb-6 flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center">
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary to-secondary opacity-20 blur-sm" />
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/15 to-primary/10 opacity-30 blur-sm" />
             <div className="relative flex h-full w-full items-center justify-center rounded-xl border border-primary/30 bg-card">
               <Brain className="h-5 w-5 text-primary" />
             </div>
@@ -65,7 +66,7 @@ export function RecallResultCard({
         </div>
 
         {/* Answer */}
-        <div className="mb-6 rounded-xl border border-primary/20 bg-gradient-to-br from-primary/[0.03] to-secondary/[0.02] p-5">
+        <div className="mb-6 rounded-xl border border-primary/20 bg-gradient-to-br from-white/[0.04] to-primary/[0.03] p-5">
           <p className="leading-relaxed text-foreground">{answer}</p>
         </div>
 

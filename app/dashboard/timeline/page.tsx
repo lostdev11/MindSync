@@ -70,10 +70,10 @@ export default function MemoryTimelinePage() {
         <div className="mx-auto max-w-3xl space-y-8">
           {/* Hero / Intro */}
           <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-6 backdrop-blur-sm">
-            <div className="absolute right-0 top-0 h-40 w-40 bg-gradient-to-br from-primary/30 via-secondary/20 to-transparent opacity-40 blur-3xl" />
+            <div className="absolute right-0 top-0 h-40 w-40 bg-gradient-to-br from-white/20 via-primary/15 to-transparent opacity-40 blur-3xl" />
             <div className="relative flex items-start gap-4">
               <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary to-secondary opacity-25 blur-md" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-primary/15 opacity-30 blur-md" />
                 <div className="relative flex h-full w-full items-center justify-center rounded-2xl border border-primary/40 bg-card">
                   <Calendar className="h-6 w-6 text-primary" />
                 </div>
@@ -131,7 +131,7 @@ export default function MemoryTimelinePage() {
           {/* Timeline */}
           {!error && !isLoading && hasTimeline && (
             <div className="relative">
-              <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-primary/40 via-border/60 to-transparent" />
+              <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-white/30 via-primary/30 to-transparent" />
               <div className="space-y-8">
                 {days.map((day) => (
                   <div key={day.date} className="relative pl-10">

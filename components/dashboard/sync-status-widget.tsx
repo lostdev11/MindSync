@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Database, Cloud, RefreshCw, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePowerSync, useStatus } from "@powersync/react"
 
 type SyncState = "synced" | "syncing" | "offline"
 
@@ -152,15 +153,33 @@ function useMockSyncState() {
   return { globalState, systems, noteCountLabel, lastSyncLabel }
 }
 
+/** When PowerSync is configured, derive PowerSync row state from real sync status. */
+function usePowerSyncStatus(): SyncSystemStatus | null {
+  const db = usePowerSync()
+  const status = useStatus()
+  if (!db || !status) return null
+  const state: SyncState = status.connected
+    ? status.downloading || status.uploading
+      ? "syncing"
+      : "synced"
+    : "offline"
+  return { id: "powersync", state }
+}
+
 export function SyncStatus() {
   return <SyncStatusWidget />
 }
 
 export function SyncStatusWidget(props: SyncStatusWidgetProps) {
   const mock = useMockSyncState()
+  const powersyncStatus = usePowerSyncStatus()
+
+  const baseSystems = props.systems ?? mock.systems
+  const systems: SyncSystemStatus[] = powersyncStatus
+    ? baseSystems.map((s) => (s.id === "powersync" ? powersyncStatus : s))
+    : baseSystems
 
   const globalState: SyncState = props.globalState ?? mock.globalState
-  const systems: SyncSystemStatus[] = props.systems ?? mock.systems
   const noteCountLabel = props.noteCountLabel ?? mock.noteCountLabel
   const lastSyncLabel = props.lastSyncLabel ?? mock.lastSyncLabel
 

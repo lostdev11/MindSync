@@ -40,9 +40,11 @@ export function AIDemo() {
         <svg className="absolute inset-0 h-full w-full opacity-20" preserveAspectRatio="none">
           <defs>
             <linearGradient id="demo-line-fade" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0" />
-              <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+              <stop offset="0%" stopColor="#fafafa" stopOpacity="0" />
+              <stop offset="45%" stopColor="#fafafa" stopOpacity="0.25" />
+              <stop offset="50%" stopColor="#d4af37" stopOpacity="0.2" />
+              <stop offset="55%" stopColor="#fafafa" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
             </linearGradient>
           </defs>
           <path d="M0,100 Q200,50 400,100 T800,80" stroke="url(#demo-line-fade)" strokeWidth="1" fill="none" />
@@ -73,8 +75,8 @@ export function AIDemo() {
         <div className="mx-auto mt-16 max-w-5xl sm:mt-20">
           <div className="relative">
             {/* Outer glow */}
-            <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-b from-secondary/15 via-secondary/5 to-transparent blur-3xl" />
-            <div className="absolute -inset-3 rounded-3xl bg-gradient-to-b from-primary/10 to-transparent blur-2xl" />
+            <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-b from-white/12 via-white/5 to-transparent blur-3xl" />
+            <div className="absolute -inset-3 rounded-3xl bg-gradient-to-b from-white/8 to-primary/5 blur-2xl" />
             
             <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-card/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
               {/* Top highlight */}
@@ -105,10 +107,10 @@ export function AIDemo() {
               <div className="p-4 sm:p-8">
                 {/* Search bar */}
                 <div className="relative mb-8">
-                  <div className="flex items-center gap-3 rounded-xl border border-secondary/25 bg-background/50 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_0_40px_rgba(6,182,212,0.05)]">
+                  <div className="flex items-center gap-3 rounded-xl border border-secondary/25 bg-background/50 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_0_40px_rgba(212,175,55,0.05)]">
                     <Search className="h-5 w-5 text-secondary/70" />
                     <span className="flex-1 text-sm text-foreground sm:text-base">What did I write about NFTs and marketplace royalties?</span>
-                    <button className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground shadow-[0_0_25px_rgba(6,182,212,0.25)] transition-all hover:shadow-[0_0_35px_rgba(6,182,212,0.4)]">
+                    <button className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground shadow-[0_0_25px_rgba(212,175,55,0.25)] transition-all hover:shadow-[0_0_35px_rgba(212,175,55,0.4)]">
                       <Sparkles className="h-4 w-4" />
                       <span className="hidden sm:inline">Search Memory</span>
                     </button>
@@ -124,8 +126,9 @@ export function AIDemo() {
                       <svg className="absolute -right-6 top-1/2 hidden h-32 w-12 -translate-y-1/2 lg:block" style={{ zIndex: 10 }}>
                         <defs>
                           <linearGradient id="ai-conn" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.4" />
-                            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.1" />
+                            <stop offset="0%" stopColor="#fafafa" stopOpacity="0.35" />
+                            <stop offset="50%" stopColor="#d4af37" stopOpacity="0.2" />
+                            <stop offset="100%" stopColor="#fafafa" stopOpacity="0.1" />
                           </linearGradient>
                         </defs>
                         <path d="M0,64 Q24,32 48,16" stroke="url(#ai-conn)" strokeWidth="1.5" fill="none" strokeDasharray="4 3" />
@@ -237,7 +240,7 @@ export function AIDemo() {
                           }`} />
 
                           {/* Hover accent */}
-                          <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-primary to-secondary transition-all duration-500 group-hover:w-full" />
+                          <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-transparent via-white/40 to-primary/60 transition-all duration-500 group-hover:w-full" />
                         </div>
                       ))}
                     </div>

@@ -4,76 +4,76 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* MindSync Dark Theme - Default */
+/* MindSync Light Theme - Gold & White */
 :root {
-  --background: #020617;
-  --foreground: #f1f5f9;
-  --card: #0f172a;
-  --card-foreground: #f1f5f9;
-  --popover: #0f172a;
-  --popover-foreground: #f1f5f9;
-  --primary: #7c3aed;
-  --primary-foreground: #ffffff;
-  --secondary: #06b6d4;
-  --secondary-foreground: #020617;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #06b6d4;
-  --accent-foreground: #020617;
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #7c3aed;
-  --chart-1: #7c3aed;
-  --chart-2: #06b6d4;
-  --chart-3: #8b5cf6;
-  --chart-4: #22d3d1;
-  --chart-5: #a855f7;
+  --background: #ffffff;
+  --foreground: #3b2b08;
+  --card: #fdf8e7;
+  --card-foreground: #3b2b08;
+  --popover: #ffffff;
+  --popover-foreground: #3b2b08;
+  --primary: #d4af37; /* rich gold */
+  --primary-foreground: #1f1500;
+  --secondary: #fff8e1; /* soft pale gold */
+  --secondary-foreground: #3b2b08;
+  --muted: #f6ecd2; /* very light gold */
+  --muted-foreground: #6b4f10;
+  --accent: #f2d37a; /* accent gold */
+  --accent-foreground: #3b2b08;
+  --destructive: #e08a3c; /* warm amber/gold */
+  --destructive-foreground: #3b2b08;
+  --border: #f0e0b0;
+  --input: #f0e0b0;
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #fafafa;
+  --chart-3: #e5c76b;
+  --chart-4: #f5e6b3;
+  --chart-5: #c9a227;
   --radius: 0.625rem;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f1f5f9;
-  --sidebar-primary: #7c3aed;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #7c3aed;
+  --sidebar: #fffaf0;
+  --sidebar-foreground: #3b2b08;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #1f1500;
+  --sidebar-accent: #f6ecd2;
+  --sidebar-accent-foreground: #3b2b08;
+  --sidebar-border: #f0e0b0;
+  --sidebar-ring: #d4af37;
 }
 
 .dark {
-  --background: #020617;
-  --foreground: #f1f5f9;
-  --card: #0f172a;
-  --card-foreground: #f1f5f9;
-  --popover: #0f172a;
-  --popover-foreground: #f1f5f9;
-  --primary: #7c3aed;
-  --primary-foreground: #ffffff;
-  --secondary: #06b6d4;
-  --secondary-foreground: #020617;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #06b6d4;
-  --accent-foreground: #020617;
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #7c3aed;
-  --chart-1: #7c3aed;
-  --chart-2: #06b6d4;
-  --chart-3: #8b5cf6;
-  --chart-4: #22d3d1;
-  --chart-5: #a855f7;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f1f5f9;
-  --sidebar-primary: #7c3aed;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: #1e293b;
-  --sidebar-ring: #7c3aed;
+  --background: #1f1500;
+  --foreground: #fff9e6;
+  --card: #2b1c02;
+  --card-foreground: #fff9e6;
+  --popover: #2b1c02;
+  --popover-foreground: #fff9e6;
+  --primary: #ffd866;
+  --primary-foreground: #2b1c02;
+  --secondary: #3b2b08;
+  --secondary-foreground: #fff9e6;
+  --muted: #3b2b08;
+  --muted-foreground: #f7e3a3;
+  --accent: #f2d37a;
+  --accent-foreground: #2b1c02;
+  --destructive: #e08a3c;
+  --destructive-foreground: #fff9e6;
+  --border: #3f2d09;
+  --input: #3f2d09;
+  --ring: #ffd866;
+  --chart-1: #ffd866;
+  --chart-2: #fff0c2;
+  --chart-3: #f2d37a;
+  --chart-4: #e3b647;
+  --chart-5: #c99624;
+  --sidebar: #2b1c02;
+  --sidebar-foreground: #fff9e6;
+  --sidebar-primary: #ffd866;
+  --sidebar-primary-foreground: #2b1c02;
+  --sidebar-accent: #3b2b08;
+  --sidebar-accent-foreground: #fff9e6;
+  --sidebar-border: #3f2d09;
+  --sidebar-ring: #ffd866;
 }
 
 @theme inline {
@@ -193,7 +193,7 @@
   content: '';
   position: absolute;
   inset: -2px;
-  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -205,8 +205,26 @@
 /* Grid background with network overlay */
 .network-bg {
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
-    linear-gradient(rgba(124, 58, 237, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124, 58, 237, 0.02) 1px, transparent 1px);
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+    linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
   background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+
+/* Gold gradient card border */
+.gold-gradient-card {
+  position: relative;
+  border-radius: 1rem;
+  background: radial-gradient(circle at top left, rgba(212, 175, 55, 0.35), transparent 55%),
+              radial-gradient(circle at bottom right, rgba(255, 216, 102, 0.3), transparent 55%),
+              var(--card);
+}
+
+.gold-gradient-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.9), rgba(255, 216, 102, 0.8));
+  z-index: -1;
 }

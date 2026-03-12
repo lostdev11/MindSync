@@ -51,7 +51,7 @@ export function MindMapPreview() {
         <div 
           className="absolute inset-0 opacity-30"
           style={{
-            backgroundImage: `linear-gradient(rgba(124,58,237,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.02) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(212,175,55,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.02) 1px, transparent 1px)`,
             backgroundSize: '64px 64px'
           }}
         />
@@ -66,7 +66,7 @@ export function MindMapPreview() {
           </div>
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Visualize your{" "}
-            <span className="bg-gradient-to-r from-primary via-[#a855f7] to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
               connected thoughts
             </span>
           </h2>
@@ -89,16 +89,18 @@ export function MindMapPreview() {
             >
               <defs>
                 <linearGradient id="mindmap-primary" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.3" />
+                  <stop offset="0%" stopColor="#fafafa" stopOpacity="0.4" />
+                  <stop offset="50%" stopColor="#d4af37" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#fafafa" stopOpacity="0.4" />
                 </linearGradient>
                 <linearGradient id="mindmap-secondary" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.15" />
+                  <stop offset="0%" stopColor="#fafafa" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#fafafa" stopOpacity="0.15" />
                 </linearGradient>
                 <linearGradient id="mindmap-active" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#06b6d4" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#7c3aed" stopOpacity="1" />
+                  <stop offset="0%" stopColor="#fafafa" stopOpacity="0.8" />
+                  <stop offset="50%" stopColor="#d4af37" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#fafafa" stopOpacity="0.8" />
                 </linearGradient>
                 <filter id="glow-line">
                   <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -128,7 +130,7 @@ export function MindMapPreview() {
                       opacity={isActive ? 1 : 0.5}
                     />
                     {/* Animated particle */}
-                    <circle r="3" fill={node.color === "primary" ? "#7c3aed" : "#06b6d4"} opacity="0.8">
+                    <circle r="3" fill={node.color === "primary" ? "#d4af37" : "#fafafa"} opacity="0.8">
                       <animateMotion
                         dur={`${2.5 + node.id * 0.2}s`}
                         repeatCount="indefinite"
@@ -160,7 +162,7 @@ export function MindMapPreview() {
                   <path
                     key={`secondary-${i}`}
                     d={`M ${fromPos.x} ${fromPos.y} Q ${ctrlX} ${ctrlY} ${toPos.x} ${toPos.y}`}
-                    stroke={isHighlighted ? "#06b6d4" : "url(#mindmap-secondary)"}
+                    stroke={isHighlighted ? "#fafafa" : "url(#mindmap-secondary)"}
                     strokeWidth={isHighlighted ? "1.5" : "1"}
                     strokeDasharray="4 4"
                     fill="none"
@@ -178,10 +180,27 @@ export function MindMapPreview() {
             >
               <div className="relative">
                 {/* Pulse rings */}
-                <div className="absolute -inset-2 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '3s' }} />
-                <div className="absolute -inset-6 rounded-full border border-primary/10 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }} />
+                <div
+                  className="absolute -inset-2 rounded-full border-2 border-primary/20"
+                  style={{
+                    animationName: 'ping',
+                    animationDuration: '3s',
+                    animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+                    animationIterationCount: 'infinite',
+                  }}
+                />
+                <div
+                  className="absolute -inset-6 rounded-full border border-primary/10"
+                  style={{
+                    animationName: 'ping',
+                    animationDuration: '4s',
+                    animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+                    animationIterationCount: 'infinite',
+                    animationDelay: '0.5s',
+                  }}
+                />
                 
-                <div className="flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full border-2 border-primary/40 bg-card shadow-[0_0_60px_rgba(124,58,237,0.3)]">
+                <div className="flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center rounded-full border-2 border-primary/40 bg-card shadow-[0_0_60px_rgba(212,175,55,0.3)]">
                   <div className="text-center px-3">
                     <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15">
                       <Sparkles className="h-5 w-5 text-primary" />
@@ -208,7 +227,10 @@ export function MindMapPreview() {
                     left: `${pos.x}%`,
                     top: `${pos.y}%`,
                     transform: 'translate(-50%, -50%)',
-                    animation: mounted ? `float 5s ease-in-out infinite` : 'none',
+                    animationName: mounted ? 'float' : 'none',
+                    animationDuration: '5s',
+                    animationTimingFunction: 'ease-in-out',
+                    animationIterationCount: 'infinite',
                     animationDelay: `${index * 0.3}s`,
                     zIndex: isActive ? 25 : 15,
                   }}
@@ -219,7 +241,7 @@ export function MindMapPreview() {
                     isActive 
                       ? 'border-secondary/60 scale-110 shadow-[0_0_35px_rgba(6,182,212,0.3)]' 
                       : isPrimary 
-                        ? 'border-primary/25 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(124,58,237,0.2)]'
+                        ? 'border-primary/25 hover:border-primary/50 hover:shadow-[0_0_25px_rgba(212,175,55,0.2)]'
                         : 'border-secondary/25 hover:border-secondary/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.2)]'
                   }`}>
                     <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${

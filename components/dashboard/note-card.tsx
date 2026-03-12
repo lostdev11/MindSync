@@ -33,7 +33,7 @@ export function NoteCard({
       )}
     >
       {/* Hover glow effect */}
-      <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 transition-opacity group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-white/5 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100" />
       
       {/* Content */}
       <div className="relative space-y-2">

@@ -20,7 +20,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-border/30 bg-card/20">
       {/* Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(124,58,237,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(124,58,237,0.01)_1px,transparent_1px)] bg-[size:48px_48px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.01)_1px,transparent_1px)] bg-[size:48px_48px]" />
       
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-4">
@@ -29,8 +29,8 @@ export function Footer() {
             <Link href="/" className="inline-flex items-center gap-2.5">
               <div className="relative flex h-9 w-9 items-center justify-center">
                 <div className="absolute inset-0 rounded-xl border border-primary/30 bg-primary/10" />
-                <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/10" />
-                <div className="relative h-3.5 w-3.5 rounded-full bg-primary shadow-[0_0_12px_rgba(124,58,237,0.6)]" />
+                <div className="absolute inset-1 rounded-lg bg-gradient-to-br from-white/15 to-primary/10" />
+                <div className="relative h-3.5 w-3.5 rounded-full bg-primary shadow-[0_0_12px_rgba(212,175,55,0.6)]" />
                 <div className="absolute -right-0.5 top-1 h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
               </div>
               <span className="text-lg font-bold text-foreground">MindSync</span>

@@ -45,7 +45,7 @@ export function Features() {
         <div 
           className="absolute inset-0 opacity-40"
           style={{
-            backgroundImage: `linear-gradient(rgba(124,58,237,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.02) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(212,175,55,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.02) 1px, transparent 1px)`,
             backgroundSize: '64px 64px'
           }}
         />
@@ -60,7 +60,7 @@ export function Features() {
           </div>
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Everything you need to build a{" "}
-            <span className="bg-gradient-to-r from-primary via-[#a855f7] to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
               second brain
             </span>
           </h2>
@@ -79,9 +79,11 @@ export function Features() {
           >
             <defs>
               <linearGradient id="feat-conn-1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0" />
-                <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.15" />
-                <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+                <stop offset="0%" stopColor="#fafafa" stopOpacity="0" />
+                <stop offset="40%" stopColor="#fafafa" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#d4af37" stopOpacity="0.25" />
+                <stop offset="60%" stopColor="#fafafa" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#fafafa" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path
@@ -144,7 +146,7 @@ export function Features() {
                     </div>
 
                     {/* Bottom accent */}
-                    <div className={`absolute bottom-0 left-0 h-0.5 w-0 ${isSecondary ? 'bg-gradient-to-r from-secondary to-primary' : 'bg-gradient-to-r from-primary to-secondary'} transition-all duration-500 group-hover:w-full`} />
+                    <div className={`absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-transparent via-white/40 to-primary/60 transition-all duration-500 group-hover:w-full`} />
                   </div>
 
                   {/* Connection dot to next card */}

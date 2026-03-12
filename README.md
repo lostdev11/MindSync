@@ -9,6 +9,8 @@ Define these environment variables (locally in `.env.local`, in production via t
 - **`NEXT_PUBLIC_SUPABASE_URL`**: Your Supabase project URL, e.g. `https://your-project-id.supabase.co`.
 - **`NEXT_PUBLIC_SUPABASE_ANON_KEY`**: Your Supabase public anon key. This is safe to expose to the browser and is used by the client and server Supabase clients.
 - **`OPENAI_API_KEY`**: Your OpenAI API key. **Do not prefix this with `NEXT_PUBLIC_` and do not expose it in client components.** It is only used in API routes (`app/api/recall` and `app/api/memory-timeline`).
+- **`NEXT_PUBLIC_POWERSYNC_URL`** (optional): Your PowerSync instance URL for offline-first sync. When set, the dashboard uses PowerSync to sync notes and collections with Supabase. Get this from the [PowerSync Dashboard](https://dashboard.powersync.com/) after creating an instance and connecting it to your Supabase project.
+- **`NEXT_PUBLIC_POWERSYNC_TOKEN`** (optional): For local development only, a PowerSync development token. In production, the app uses your Supabase session JWT automatically.
 
 You can copy `.env.example` to `.env.local` and fill in your real values:
 
@@ -38,6 +40,17 @@ cp .env.example .env.local
    ```
 
 4. Open `http://localhost:3000` in your browser.
+
+### PowerSync (offline-first sync)
+
+To enable offline-first sync for notes and collections:
+
+1. Sign up at [PowerSync Cloud](https://accounts.powersync.com/portal/powersync-signup) and create a project.
+2. In the PowerSync Dashboard, connect your Supabase project as the source database (see [PowerSync + Supabase](https://docs.powersync.com/integrations/supabase/guide)).
+3. Configure Sync Streams so `collections` and `notes` are synced per user (e.g. `user_id = auth.user_id()`).
+4. Add `NEXT_PUBLIC_POWERSYNC_URL` (and optionally `NEXT_PUBLIC_POWERSYNC_TOKEN` for dev) to `.env.local`.
+
+The dashboard will then use a local SQLite store synced via PowerSync to Supabase; the sync status widget shows real PowerSync status when the URL is set.
 
 ### Seeding demo data
 

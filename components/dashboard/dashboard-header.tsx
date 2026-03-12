@@ -50,7 +50,7 @@ export function DashboardHeader({ title, showSearch = true }: DashboardHeaderPro
             onClick={handleRecall}
             className="group relative h-11 gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-primary to-primary/80 px-5 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-secondary opacity-0 transition-opacity group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-primary/80 to-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
             <Sparkles className="relative h-4 w-4" />
             <span className="relative">Recall</span>
           </Button>

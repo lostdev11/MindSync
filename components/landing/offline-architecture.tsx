@@ -33,7 +33,7 @@ export function OfflineArchitecture() {
       <div className="absolute inset-0">
         <div className="absolute right-0 top-1/3 h-[500px] w-[500px] translate-x-1/3 rounded-full bg-secondary/[0.04] blur-[100px]" />
         <div className="absolute left-0 bottom-0 h-[400px] w-[400px] -translate-x-1/3 rounded-full bg-primary/[0.04] blur-[100px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.01)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.01)_1px,transparent_1px)] bg-[size:48px_48px]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -42,7 +42,7 @@ export function OfflineArchitecture() {
           <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-secondary">Offline-First Architecture</p>
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Built for{" "}
-            <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
               offline-first
             </span>{" "}
             reliability
@@ -60,9 +60,11 @@ export function OfflineArchitecture() {
               <svg className="h-full w-8 -ml-4" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#7c3aed" />
-                    <stop offset="50%" stopColor="#06b6d4" />
-                    <stop offset="100%" stopColor="#7c3aed" />
+                    <stop offset="0%" stopColor="#fafafa" stopOpacity="0.5" />
+                    <stop offset="30%" stopColor="#fafafa" stopOpacity="0.4" />
+                    <stop offset="50%" stopColor="#d4af37" stopOpacity="0.5" />
+                    <stop offset="70%" stopColor="#fafafa" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#fafafa" stopOpacity="0.5" />
                   </linearGradient>
                 </defs>
                 <line x1="16" y1="0" x2="16" y2="100%" stroke="url(#flow-gradient)" strokeWidth="2" strokeDasharray="8 4" opacity="0.4" />
@@ -83,7 +85,7 @@ export function OfflineArchitecture() {
                         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-8">
                           {/* Icon and step number */}
                           <div className="flex items-center gap-4 lg:w-48">
-                            <div className={`relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border ${isSecondary ? 'border-secondary/40 bg-secondary/10 shadow-[0_0_30px_rgba(6,182,212,0.15)]' : 'border-primary/40 bg-primary/10 shadow-[0_0_30px_rgba(124,58,237,0.15)]'}`}>
+                            <div className={`relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border ${isSecondary ? 'border-secondary/40 bg-secondary/10 shadow-[0_0_30px_rgba(250,250,250,0.15)]' : 'border-primary/40 bg-primary/10 shadow-[0_0_30px_rgba(212,175,55,0.15)]'}`}>
                               <Icon className={`h-8 w-8 ${isSecondary ? 'text-secondary' : 'text-primary'}`} />
                               {/* Step number badge */}
                               <div className={`absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${isSecondary ? 'bg-secondary text-secondary-foreground' : 'bg-primary text-primary-foreground'}`}>

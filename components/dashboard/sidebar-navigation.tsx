@@ -30,7 +30,7 @@ export function SidebarNavigation() {
       {/* Logo */}
       <div className="flex items-center gap-3 border-b border-border/50 px-5 py-5">
         <div className="relative flex h-9 w-9 items-center justify-center">
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary to-secondary opacity-20 blur-sm" />
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/15 to-primary/10 opacity-30 blur-sm" />
           <div className="relative flex h-full w-full items-center justify-center rounded-lg border border-primary/30 bg-card">
             <Brain className="h-5 w-5 text-primary" />
           </div>
@@ -66,7 +66,7 @@ export function SidebarNavigation() {
                 className={cn(
                   "absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full transition-all duration-200",
                   isActive 
-                    ? "bg-primary shadow-[0_0_8px_rgba(124,58,237,0.5)]" 
+                    ? "bg-primary shadow-[0_0_8px_rgba(212,175,55,0.5)]" 
                     : "bg-transparent group-hover:bg-muted-foreground/30"
                 )}
               />

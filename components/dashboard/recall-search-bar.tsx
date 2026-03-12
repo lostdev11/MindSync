@@ -27,7 +27,7 @@ export function RecallSearchBar({ onSearch, isLoading = false, initialQuery = ""
       {/* Background glow when focused */}
       <div 
         className={cn(
-          "absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary/20 via-secondary/10 to-primary/20 opacity-0 blur-xl transition-opacity duration-300",
+          "absolute -inset-1 rounded-2xl bg-gradient-to-r from-white/15 via-primary/10 to-white/15 opacity-0 blur-xl transition-opacity duration-300",
           isFocused && "opacity-100"
         )} 
       />
@@ -41,7 +41,7 @@ export function RecallSearchBar({ onSearch, isLoading = false, initialQuery = ""
         {/* Icon */}
         <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
           <div className={cn(
-            "absolute inset-0 rounded-xl bg-gradient-to-br from-primary to-secondary opacity-20 blur-sm transition-opacity",
+            "absolute inset-0 rounded-xl bg-gradient-to-br from-white/15 to-primary/10 opacity-25 blur-sm transition-opacity",
             isFocused && "opacity-40"
           )} />
           <div className="relative flex h-full w-full items-center justify-center rounded-xl border border-primary/30 bg-card">
@@ -69,7 +69,7 @@ export function RecallSearchBar({ onSearch, isLoading = false, initialQuery = ""
           disabled={!query.trim() || isLoading}
           className="group relative h-12 gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-primary to-primary/80 px-6 font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-secondary opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-primary/80 to-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
           {isLoading ? (
             <>
               <div className="relative h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground" />

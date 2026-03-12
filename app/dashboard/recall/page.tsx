@@ -176,7 +176,7 @@ function RecallContent() {
       <header className="border-b border-border/50 bg-card/30 px-6 py-6 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center">
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary to-secondary opacity-20 blur-sm" />
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/15 to-primary/10 opacity-25 blur-sm" />
             <div className="relative flex h-full w-full items-center justify-center rounded-xl border border-primary/30 bg-card">
               <Brain className="h-5 w-5 text-primary" />
             </div>

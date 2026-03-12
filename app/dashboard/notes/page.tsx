@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { NoteEditor } from "@/components/dashboard/note-editor"
 import { NoteCard } from "@/components/dashboard/note-card"
 import { Button } from "@/components/ui/button"
@@ -10,6 +11,7 @@ import type { Note, Collection } from "@/types/mindsync"
 import { FileText, FolderOpen, Plus, Search, Trash2 } from "lucide-react"
 
 export default function NotesPage() {
+  const searchParams = useSearchParams()
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [notes, setNotes] = useState<Note[]>([])
@@ -21,6 +23,19 @@ export default function NotesPage() {
   const [collections, setCollections] = useState<Collection[]>([])
   const [isLoadingCollections, setIsLoadingCollections] = useState(false)
   const [collectionsError, setCollectionsError] = useState<string | null>(null)
+  const hasAppliedUrlCollection = useRef(false)
+
+  // Preselect collection from URL once when collections have loaded
+  useEffect(() => {
+    if (hasAppliedUrlCollection.current || collections.length === 0) return
+    const collectionId = searchParams.get("collection")
+    if (!collectionId) return
+    const exists = collections.some((c) => c.id === collectionId)
+    if (exists) {
+      setSelectedCollection(collectionId)
+      hasAppliedUrlCollection.current = true
+    }
+  }, [collections, searchParams])
 
   const selectedNote = useMemo(
     () => notes.find((note) => note.id === selectedNoteId) ?? null,
@@ -169,11 +184,46 @@ export default function NotesPage() {
           )
         }
       } else {
+        // Notes require a collection_id: use selected collection, first collection, or create "Uncategorized"
+        let collectionId = selectedCollection
+        if (!collectionId && collections.length > 0) {
+          collectionId = collections[0].id
+        }
+        if (!collectionId) {
+          const { data: newCollection, error: createErr } = await supabase
+            .from("collections")
+            .insert({
+              user_id: userId,
+              name: "Uncategorized",
+              color: "#64748b",
+            })
+            .select("id, name, color, created_at, updated_at, deleted_at")
+            .single()
+          if (createErr) throw createErr
+          if (newCollection) {
+            const uncategorized: Collection = {
+              id: (newCollection as any).id as string,
+              user_id: userId,
+              name: (newCollection as any).name ?? "Uncategorized",
+              color: (newCollection as any).color ?? "#64748b",
+              created_at: (newCollection as any).created_at,
+              updated_at: (newCollection as any).updated_at,
+              deleted_at: (newCollection as any).deleted_at ?? null,
+            }
+            setCollections((prev) => [uncategorized, ...prev])
+            collectionId = uncategorized.id
+            setSelectedCollection(uncategorized.id)
+          }
+        }
+        if (!collectionId) {
+          throw new Error("Could not determine or create a collection for this note.")
+        }
+
         const { data: inserted, error } = await supabase
           .from("notes")
           .insert({
             user_id: userId,
-            collection_id: selectedCollection,
+            collection_id: collectionId,
             title: data.title,
             content: data.content,
             tags: data.tags,

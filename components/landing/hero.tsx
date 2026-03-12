@@ -24,8 +24,8 @@ export function Hero() {
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px)
+              linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px)
             `,
             backgroundSize: '64px 64px'
           }}
@@ -51,16 +51,18 @@ export function Hero() {
           <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Your thoughts,{" "}
             <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-primary via-[#a855f7] to-secondary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent">
                 perfectly recalled
               </span>
               <svg className="absolute -bottom-1 left-0 h-2 w-full" viewBox="0 0 200 8" preserveAspectRatio="none">
                 <path d="M0,6 Q50,2 100,6 T200,6" stroke="url(#hero-underline)" strokeWidth="2" fill="none" strokeLinecap="round" />
                 <defs>
                   <linearGradient id="hero-underline" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#7c3aed" />
-                    <stop offset="50%" stopColor="#a855f7" />
-                    <stop offset="100%" stopColor="#06b6d4" />
+                    <stop offset="0%" stopColor="#fafafa" stopOpacity="0.6" />
+                    <stop offset="45%" stopColor="#fafafa" stopOpacity="0.9" />
+                    <stop offset="50%" stopColor="#d4af37" />
+                    <stop offset="55%" stopColor="#fafafa" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#fafafa" stopOpacity="0.6" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -76,7 +78,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <Button 
               size="lg" 
-              className="group relative h-12 overflow-hidden rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_rgba(124,58,237,0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(124,58,237,0.45)] sm:h-14 sm:px-10 sm:text-base"
+              className="group relative h-12 overflow-hidden rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,175,55,0.45)] sm:h-14 sm:px-10 sm:text-base"
             >
               <span className="relative z-10">Start Building Your Memory</span>
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

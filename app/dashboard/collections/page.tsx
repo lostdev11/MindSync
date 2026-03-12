@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   Lightbulb,
   BookOpen,
@@ -12,11 +13,20 @@ import {
   Loader2,
   Pencil,
   Trash2,
+  ExternalLink,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { supabase } from "@/lib/supabase/client"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet"
+import { NoteCard } from "@/components/dashboard/note-card"
 
 type Collection = {
   id: string
@@ -24,6 +34,14 @@ type Collection = {
   color: string | null
   note_count: number
   connections_count: number
+}
+
+type CollectionNote = {
+  id: string
+  title: string
+  content: string
+  tags: string[]
+  created_at: string
 }
 
 const FALLBACK_COLORS = [
@@ -39,6 +57,7 @@ function getFallbackColor(index: number) {
 }
 
 export default function CollectionsPage() {
+  const router = useRouter()
   const [collections, setCollections] = useState<Collection[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -48,6 +67,53 @@ export default function CollectionsPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState("")
   const newCollectionInputRef = useRef<HTMLInputElement | null>(null)
+  const [notesSheetCollection, setNotesSheetCollection] = useState<Collection | null>(null)
+  const [collectionNotes, setCollectionNotes] = useState<CollectionNote[]>([])
+  const [isLoadingCollectionNotes, setIsLoadingCollectionNotes] = useState(false)
+
+  const fetchNotesForCollection = useCallback(async (collectionId: string) => {
+    setIsLoadingCollectionNotes(true)
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser()
+      if (userError || !user) {
+        setCollectionNotes([])
+        return
+      }
+      const { data, error } = await supabase
+        .from("notes")
+        .select("id, title, content, tags, created_at")
+        .eq("user_id", user.id)
+        .eq("collection_id", collectionId)
+        .is("deleted_at", null)
+        .order("is_pinned", { ascending: false })
+        .order("created_at", { ascending: false })
+      if (error) throw error
+      setCollectionNotes(
+        (data ?? []).map((row) => ({
+          id: row.id as string,
+          title: (row as any).title ?? "",
+          content: (row as any).content ?? "",
+          tags: ((row as any).tags as string[]) ?? [],
+          created_at: (row as any).created_at,
+        }))
+      )
+    } catch {
+      setCollectionNotes([])
+    } finally {
+      setIsLoadingCollectionNotes(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (notesSheetCollection) {
+      fetchNotesForCollection(notesSheetCollection.id)
+    } else {
+      setCollectionNotes([])
+    }
+  }, [notesSheetCollection, fetchNotesForCollection])
 
   useEffect(() => {
     const loadCollections = async () => {
@@ -68,7 +134,7 @@ export default function CollectionsPage() {
 
         const { data, error } = await supabase
           .from("collections")
-          .select("id, name, color, note_count, connections_count, deleted_at")
+          .select("id, name")
           .eq("user_id", user.id)
           .is("deleted_at", null)
           .order("created_at", { ascending: false })
@@ -115,9 +181,8 @@ export default function CollectionsPage() {
         .insert({
           user_id: user.id,
           name,
-          color: newColor,
         })
-        .select("id, name, color, note_count, connections_count")
+        .select("id, name")
         .single()
 
       if (error) throw error
@@ -126,14 +191,17 @@ export default function CollectionsPage() {
         id: (data as any).id as string,
         name: (data as any).name ?? name,
         color: ((data as any).color as string | null) ?? newColor,
-        note_count: (data as any).note_count ?? 0,
-        connections_count: (data as any).connections_count ?? 0,
+        note_count: 0,
+        connections_count: 0,
       }
 
       setCollections((prev) => [created, ...prev])
       setNewName("")
     } catch (err: any) {
-      setError(err.message ?? "Failed to create collection")
+      const parts = [err?.message ?? "Failed to create collection"]
+      if (err?.details) parts.push(String(err.details))
+      if (err?.hint) parts.push(`Hint: ${err.hint}`)
+      setError(parts.join(" — "))
     } finally {
       setIsSaving(false)
     }
@@ -160,7 +228,7 @@ export default function CollectionsPage() {
         .from("collections")
         .update({ name })
         .eq("id", editingId)
-        .select("id, name, color, note_count, connections_count")
+        .select("id, name")
         .single()
 
       if (error) throw error
@@ -286,12 +354,16 @@ export default function CollectionsPage() {
                   backgroundImage: `radial-gradient(circle at top left, ${collection.baseColor}33, transparent 60%)`,
                 }
 
+                const isEditing = editingId === collection.id
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={collection.id}
+                    onClick={() => !isEditing && setNotesSheetCollection(collection)}
                     className={cn(
                       "group relative overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-6 text-left transition-all duration-300",
                       "hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5",
+                      !isEditing && "cursor-pointer",
                     )}
                     style={bgGradient}
                   >
@@ -360,7 +432,10 @@ export default function CollectionsPage() {
                             <button
                               type="button"
                               className="rounded-full p-1 text-muted-foreground hover:bg-background/60 hover:text-foreground"
-                              onClick={() => handleStartEdit(collection)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleStartEdit(collection)
+                              }}
                               aria-label="Rename collection"
                             >
                               <Pencil className="h-3.5 w-3.5" />
@@ -368,7 +443,10 @@ export default function CollectionsPage() {
                             <button
                               type="button"
                               className="rounded-full p-1 text-muted-foreground hover:bg-background/60 hover:text-red-500"
-                              onClick={() => handleSoftDelete(collection.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleSoftDelete(collection.id)
+                              }}
                               aria-label="Delete collection"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
@@ -395,7 +473,7 @@ export default function CollectionsPage() {
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
                       style={{ "--tw-gradient-via": collection.baseColor } as any}
                     />
-                  </div>
+                  </button>
                 )
               })}
 
@@ -430,6 +508,76 @@ export default function CollectionsPage() {
           )}
         </div>
       </div>
+
+      {/* Notes sheet: opens independently when a collection is chosen */}
+      <Sheet open={!!notesSheetCollection} onOpenChange={(open) => !open && setNotesSheetCollection(null)}>
+        <SheetContent
+          side="right"
+          className="flex w-full max-w-xl flex-col border-l border-border/50 p-0 sm:max-w-xl"
+        >
+          {notesSheetCollection && (
+            <>
+              <SheetHeader className="border-b border-border/50 pb-4">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="h-3 w-3 rounded-full"
+                    style={{
+                      backgroundColor: notesSheetCollection.color ?? getFallbackColor(0),
+                    }}
+                  />
+                  <SheetTitle className="text-lg">{notesSheetCollection.name}</SheetTitle>
+                </div>
+                <SheetDescription>
+                  Notes in this collection · {collectionNotes.length} total
+                </SheetDescription>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 w-fit gap-2"
+                  onClick={() => router.push(`/dashboard/notes?collection=${notesSheetCollection.id}`)}
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  Open in Notes
+                </Button>
+              </SheetHeader>
+              <div className="flex-1 overflow-auto p-4">
+                {isLoadingCollectionNotes ? (
+                  <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading notes...
+                  </div>
+                ) : collectionNotes.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-3 py-8 text-center text-muted-foreground">
+                    <FileText className="h-10 w-10 opacity-50" />
+                    <p className="text-sm">No notes in this collection yet.</p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => router.push(`/dashboard/notes?collection=${notesSheetCollection.id}`)}
+                    >
+                      Add note
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {collectionNotes.map((note) => (
+                      <NoteCard
+                        key={note.id}
+                        title={note.title || "Untitled note"}
+                        preview={note.content || "No content yet"}
+                        date={new Date(note.created_at).toLocaleDateString()}
+                        tags={note.tags}
+                        onClick={() => router.push(`/dashboard/notes?collection=${notesSheetCollection.id}`)}
+                        variant="compact"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
